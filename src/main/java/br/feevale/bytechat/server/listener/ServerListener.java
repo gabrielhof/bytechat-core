@@ -1,4 +1,4 @@
-package br.feevale.bytechat.listener;
+package br.feevale.bytechat.server.listener;
 
 import br.feevale.bytechat.util.Session;
 
