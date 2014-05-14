@@ -1,4 +1,4 @@
-package br.feevale.bytechat.server;
+package br.feevale.bytechat.server.connector;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

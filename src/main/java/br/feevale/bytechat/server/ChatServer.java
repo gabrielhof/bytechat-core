@@ -3,6 +3,7 @@ package br.feevale.bytechat.server;
 import java.util.List;
 
 import br.feevale.bytechat.config.Configuration;
+import br.feevale.bytechat.server.connector.ServerConnector;
 import br.feevale.bytechat.server.exception.ServerException;
 import br.feevale.bytechat.server.listener.ServerListener;
 import br.feevale.bytechat.util.Session;

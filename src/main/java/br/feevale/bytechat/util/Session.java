@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import br.feevale.bytechat.server.Connection;
+import br.feevale.bytechat.server.connector.Connection;
+import br.feevale.bytechat.server.exception.ServerException;
 import br.feevale.bytechat.server.listener.SessionListener;
 
 public class Session implements Runnable {
@@ -58,7 +59,12 @@ public class Session implements Runnable {
 		eventDispatcher.execute(new Runnable() {
 			public void run() {
 				for (SessionListener listener : listeners) {
-					listener.messageReceived(Session.this, message);
+					try {
+						listener.messageReceived(Session.this, message);
+					} catch (ServerException e) {
+						//TODO
+						e.printStackTrace();
+					}
 				}
 			}
 		});
