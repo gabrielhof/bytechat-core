@@ -1,7 +1,7 @@
 package br.feevale.bytechat.server.connector;
 
 import br.feevale.bytechat.config.Configuration;
-import br.feevale.bytechat.server.exception.ServerException;
+import br.feevale.bytechat.exception.ServerException;
 
 public interface ServerConnector {
 

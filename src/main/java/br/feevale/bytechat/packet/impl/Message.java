@@ -1,10 +1,10 @@
-package br.feevale.bytechat.util.packets;
+package br.feevale.bytechat.packet.impl;
 
 import java.util.List;
 
-import br.feevale.bytechat.util.Packet;
+import br.feevale.bytechat.packet.Packet;
+import br.feevale.bytechat.packet.PacketType;
 import br.feevale.bytechat.util.User;
-import br.feevale.bytechat.util.enums.PacketType;
 
 public class Message implements Packet {
 

@@ -1,4 +1,4 @@
-package br.feevale.bytechat.server.exception;
+package br.feevale.bytechat.exception;
 
 public class ServerAlreadyStartedException extends ServerException {
 

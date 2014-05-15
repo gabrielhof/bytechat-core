@@ -1,4 +1,4 @@
-package br.feevale.bytechat.util.enums;
+package br.feevale.bytechat.packet;
 
 public enum PacketType {
 

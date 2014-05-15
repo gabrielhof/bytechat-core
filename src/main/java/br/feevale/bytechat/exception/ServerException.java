@@ -1,9 +1,10 @@
-package br.feevale.bytechat.server.exception;
+package br.feevale.bytechat.exception;
 
-public class ServerException extends Exception {
 
-	private static final long serialVersionUID = 3314640144276378173L;
-	
+public class ServerException extends ChatException {
+
+	private static final long serialVersionUID = -196792134103936579L;
+
 	public ServerException() {
 		super();
 	}

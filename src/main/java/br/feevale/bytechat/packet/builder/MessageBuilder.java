@@ -1,10 +1,10 @@
-package br.feevale.bytechat.util.builder;
+package br.feevale.bytechat.packet.builder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.feevale.bytechat.packet.impl.Message;
 import br.feevale.bytechat.util.User;
-import br.feevale.bytechat.util.packets.Message;
 
 public class MessageBuilder {
 
@@ -34,6 +34,10 @@ public class MessageBuilder {
 	public MessageBuilder message(String m) {
 		message.setMessage(m);
 		return this;
+	}
+	
+	public Message getMessage() {
+		return message;
 	}
 	
 	public static MessageBuilder create() {
