@@ -1,4 +1,4 @@
-package br.feevale.bytechat.packet.transformer;
+package br.feevale.bytechat.protocol;
 
 import br.feevale.bytechat.packet.Packet;
 

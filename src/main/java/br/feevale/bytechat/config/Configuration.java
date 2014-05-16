@@ -4,7 +4,7 @@ public class Configuration {
 
 	private String host;
 	private int port;
-
+	
 	public String getHost() {
 		return host;
 	}

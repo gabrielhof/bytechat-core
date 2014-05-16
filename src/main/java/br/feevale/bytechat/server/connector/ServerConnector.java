@@ -2,6 +2,7 @@ package br.feevale.bytechat.server.connector;
 
 import br.feevale.bytechat.config.Configuration;
 import br.feevale.bytechat.exception.ServerException;
+import br.feevale.bytechat.protocol.Connection;
 
 public interface ServerConnector {
 

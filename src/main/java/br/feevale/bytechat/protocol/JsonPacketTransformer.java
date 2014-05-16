@@ -1,13 +1,13 @@
-package br.feevale.bytechat.packet.transformer;
+package br.feevale.bytechat.protocol;
 
 import java.io.StringWriter;
 
+import br.feevale.bytechat.packet.FakePacket;
 import br.feevale.bytechat.packet.Packet;
-import br.feevale.bytechat.packet.impl.Message;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 
 public class JsonPacketTransformer implements PacketTransformer {
 
@@ -16,14 +16,16 @@ public class JsonPacketTransformer implements PacketTransformer {
 	public JsonPacketTransformer() {
 		jsonMapper = new ObjectMapper();
 		jsonMapper.configure(SerializationFeature.INDENT_OUTPUT, false);
+		jsonMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 	
 	@Override
 	public Packet fromString(String s) {
 		try {
-			Message message = jsonMapper.readValue(s, Message.class); //TODO generalizar
+			FakePacket fake = jsonMapper.readValue(s, FakePacket.class);
+			Packet packet = jsonMapper.readValue(s, fake.getType().getPacketClass());
 			
-			return message;
+			return packet;
 		} catch (Exception e) {
 			//TODO implementar algo
 			e.printStackTrace();

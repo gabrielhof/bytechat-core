@@ -1,13 +1,13 @@
-package br.feevale.bytechat.packet.impl;
+package br.feevale.bytechat.packet;
 
 import java.util.List;
 
-import br.feevale.bytechat.packet.Packet;
-import br.feevale.bytechat.packet.PacketType;
 import br.feevale.bytechat.util.User;
 
 public class Message implements Packet {
 
+	private static final long serialVersionUID = 2858203931665696228L;
+	
 	private User originator;
 	private List<User> recipients;
 	
@@ -38,7 +38,7 @@ public class Message implements Packet {
 	}
 
 	@Override
-	public PacketType type() {
+	public PacketType getType() {
 		return PacketType.MESSAGE;
 	}
 

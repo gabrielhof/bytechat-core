@@ -1,4 +1,4 @@
-package br.feevale.bytechat.server.connector;
+package br.feevale.bytechat.protocol;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,14 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import org.apache.commons.lang.StringUtils;
 
 import br.feevale.bytechat.exception.ConnectionException;
 import br.feevale.bytechat.exception.PacketException;
+import br.feevale.bytechat.factory.PacketTransformerFactory;
 import br.feevale.bytechat.packet.Packet;
-import br.feevale.bytechat.packet.factory.PacketTransformerFactory;
-import br.feevale.bytechat.packet.transformer.PacketTransformer;
+import br.feevale.bytechat.util.ThreadUtils;
 
 public class SocketConnection implements Connection {
 
@@ -61,6 +62,7 @@ public class SocketConnection implements Connection {
 	@Override
 	public Packet receive() throws PacketException {
 		try {
+			ThreadUtils.sleep(100);
 			String packetString = reader.readLine();
 			
 			if (StringUtils.isNotBlank(packetString)) {
@@ -68,6 +70,8 @@ public class SocketConnection implements Connection {
 			} else {
 				return receive();
 			}
+		} catch (SocketTimeoutException e) {
+			return receive();
 		} catch (IOException e) {
 			throw new PacketException(e);
 		}

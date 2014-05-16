@@ -1,9 +1,9 @@
-package br.feevale.bytechat.packet.builder;
+package br.feevale.bytechat.builder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import br.feevale.bytechat.packet.impl.Message;
+import br.feevale.bytechat.packet.Message;
 import br.feevale.bytechat.util.User;
 
 public class MessageBuilder {

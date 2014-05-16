@@ -7,19 +7,19 @@ import java.util.concurrent.Executors;
 
 import br.feevale.bytechat.exception.ConnectionException;
 import br.feevale.bytechat.exception.PacketException;
+import br.feevale.bytechat.listener.SessionListener;
 import br.feevale.bytechat.packet.Packet;
-import br.feevale.bytechat.server.connector.Connection;
-import br.feevale.bytechat.server.listener.SessionListener;
+import br.feevale.bytechat.protocol.Connection;
 
-public class Session implements Runnable {
+public class Session {
 	
 	private User user;
 	private Connection connection;
 	
 	private List<SessionListener> listeners = new ArrayList<SessionListener>();
 	
+	private Thread connectionObserverThread;
 	private Executor eventDispatcher = Executors.newSingleThreadExecutor();
-	private Thread thread;
 	
 	public Session(User user, Connection connection) {
 		this.user = user;
@@ -43,29 +43,15 @@ public class Session implements Runnable {
 	}
 	
 	public void start() {
-		if (thread == null) {
-			thread = new Thread(this);
-			thread.start();
+		if (connectionObserverThread == null) {
+			connectionObserverThread = new Thread(new SessionConnectionObserver());
+			connectionObserverThread.start();
 		}
 	}
 	
 	public void stop() throws ConnectionException {
-		thread = null;
-		
 		if (!connection.isClosed()) {
 			connection.close();
-		}
-	}
-	
-	public void run() {
-		try {
-			while (thread != null) {
-				Packet packet = connection.receive();
-				firePacketReceived(packet);
-			}
-		} catch (PacketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
@@ -77,6 +63,22 @@ public class Session implements Runnable {
 				}
 			}
 		});
+	}
+	
+	class SessionConnectionObserver implements Runnable {
+
+		@Override
+		public void run() {
+			try {
+				while (!connection.isClosed()) {
+					Packet packet = connection.receive();
+					firePacketReceived(packet);
+				}
+			} catch (PacketException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 
 }

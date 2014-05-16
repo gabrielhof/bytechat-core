@@ -1,6 +1,6 @@
-package br.feevale.bytechat.packet.factory;
+package br.feevale.bytechat.factory;
 
-import br.feevale.bytechat.packet.transformer.PacketTransformer;
+import br.feevale.bytechat.protocol.PacketTransformer;
 
 public abstract class PacketTransformerFactory {
 
