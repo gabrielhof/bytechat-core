@@ -6,6 +6,9 @@ public enum PacketType {
 	UNBIND(Unbind.class),
 	MESSAGE(Message.class), 
 	USER_LIST(UserList.class),
+	
+	FAIL(Fail.class),
+	SUCCESS(Success.class)
 	;
 	
 	private Class<? extends Packet> packetClass;

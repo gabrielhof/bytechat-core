@@ -1,5 +1,6 @@
 package br.feevale.bytechat.server;
 
+import java.util.Collection;
 import java.util.List;
 
 import br.feevale.bytechat.config.Configuration;
@@ -26,7 +27,7 @@ public interface ChatServer {
 	
 	public boolean removeSession(Session session) throws ServerException;
 	
-	public List<Session> getSessions();
+	public Collection<Session> getSessions();
 	
 	public boolean addServerListener(ServerListener serverListener);
 	

@@ -69,6 +69,26 @@ public class Session {
 		connectionObserverThread = null;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Session) {
+			Session session = (Session) obj;
+			
+			if (session.getUser() != null && getUser() != null) {
+				return session.getUser().equals(getUser());
+			}
+			
+			return false;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return getUser() == null ? super.hashCode() : getUser().hashCode();
+	}
+	
 	protected void firePacketReceived(final Packet packet) {
 		Method method = ReflectionUtils.findMethod(SessionListener.class, "packetReceived", Session.class, Packet.class);
 		ReflectionUtils.invokeEachItemInBackGround(eventDispatcher, listeners, method, this, packet);
