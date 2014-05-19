@@ -1,5 +1,6 @@
 package br.feevale.bytechat.util;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -31,7 +32,16 @@ public class Session {
 	}
 	
 	public void send(Packet packet) throws PacketException {
-		connection.send(packet);
+		try {
+			connection.send(packet);
+		} catch (PacketException e) {
+			if (connection.isClosed()) {
+				stop();
+				return;
+			}
+			
+			throw e;
+		}
 	}
 	
 	public Connection getConnection() {
@@ -49,34 +59,43 @@ public class Session {
 		}
 	}
 	
-	public void stop() throws ConnectionException {
+	public void stop() {
 		if (!connection.isClosed()) {
-			connection.close();
+			try {
+				connection.close();
+			} catch (ConnectionException e) {}
 		}
+		
+		connectionObserverThread = null;
 	}
 	
 	protected void firePacketReceived(final Packet packet) {
-		eventDispatcher.execute(new Runnable() {
-			public void run() {
-				for (SessionListener listener : listeners) {
-					listener.packetReceived(Session.this, packet);
-				}
-			}
-		});
+		Method method = ReflectionUtils.findMethod(SessionListener.class, "packetReceived", Session.class, Packet.class);
+		ReflectionUtils.invokeEachItemInBackGround(eventDispatcher, listeners, method, this, packet);
+	}
+	
+	protected void fireSessionEnded() {
+		Method method = ReflectionUtils.findMethod(SessionListener.class, "sessionEnded", Session.class);
+		ReflectionUtils.invokeEachItemInBackGround(eventDispatcher, listeners, method, this);
 	}
 	
 	class SessionConnectionObserver implements Runnable {
 
 		@Override
 		public void run() {
-			try {
-				while (!connection.isClosed()) {
+			while (!connection.isClosed()) {
+				try {
 					Packet packet = connection.receive();
 					firePacketReceived(packet);
+				} catch (PacketException e) {
+					if (!connection.isClosed()) {
+						e.printStackTrace();
+					}
 				}
-			} catch (PacketException e) {
-				e.printStackTrace();
 			}
+			
+			stop();
+			fireSessionEnded();
 		}
 		
 	}

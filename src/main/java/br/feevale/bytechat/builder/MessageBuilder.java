@@ -12,17 +12,17 @@ public class MessageBuilder {
 	
 	private MessageBuilder() {}
 	
-	public MessageBuilder originator(User originator) {
+	public MessageBuilder from(User originator) {
 		message.setOriginator(originator);
 		return this;
 	}
 	
-	public MessageBuilder recipients(List<User> recipients) {
+	public MessageBuilder to(List<User> recipients) {
 		message.setRecipients(recipients);
 		return this;
 	}
 	
-	public MessageBuilder recipient(User recipient) {
+	public MessageBuilder to(User recipient) {
 		if (message.getRecipients() == null) {
 			message.setRecipients(new ArrayList<User>());
 		}
@@ -31,7 +31,7 @@ public class MessageBuilder {
 		return this;
 	}
 	
-	public MessageBuilder message(String m) {
+	public MessageBuilder withMessage(String m) {
 		message.setMessage(m);
 		return this;
 	}

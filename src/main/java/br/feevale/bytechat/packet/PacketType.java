@@ -2,8 +2,10 @@ package br.feevale.bytechat.packet;
 
 public enum PacketType {
 
-	ACK(Ack.class),
-	MESSAGE(Message.class),
+	BIND(Bind.class),
+	UNBIND(Unbind.class),
+	MESSAGE(Message.class), 
+	USER_LIST(UserList.class),
 	;
 	
 	private Class<? extends Packet> packetClass;

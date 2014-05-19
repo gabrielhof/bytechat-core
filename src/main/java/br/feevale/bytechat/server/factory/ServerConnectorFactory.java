@@ -4,8 +4,12 @@ import br.feevale.bytechat.config.Configuration;
 import br.feevale.bytechat.exception.ServerException;
 import br.feevale.bytechat.server.connector.ServerConnector;
 
-public interface ServerConnectorFactory {
+public abstract class ServerConnectorFactory {
 
-	public ServerConnector create(Configuration configuration) throws ServerException;
+	public abstract ServerConnector create(Configuration configuration) throws ServerException;
+	
+	public static ServerConnectorFactory getDefault() {
+		return new ServerSocketConnectorFactory();
+	}
 	
 }

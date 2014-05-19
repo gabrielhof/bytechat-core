@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import org.apache.commons.lang.StringUtils;
@@ -55,6 +56,12 @@ public class SocketConnection implements Connection {
 			writer.write(String.format("%s\n", packetString));
 			writer.flush();
 		} catch (IOException e) {
+			if (e instanceof SocketException) {
+				try {
+					close();
+				} catch (ConnectionException e1) {}
+			}
+			
 			throw new PacketException(e);
 		}
 	}
@@ -68,6 +75,10 @@ public class SocketConnection implements Connection {
 			if (StringUtils.isNotBlank(packetString)) {
 				return packetTransformer.fromString(packetString);
 			} else {
+				if (isClosed()) {
+					throw new SocketException("Conexao fechada");
+				}
+				
 				return receive();
 			}
 		} catch (SocketTimeoutException e) {

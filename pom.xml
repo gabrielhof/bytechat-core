@@ -56,6 +56,7 @@
 
 	<properties>
 		<jackson.version>2.2.3</jackson.version>
+		
 		<commons.lang.version>2.6</commons.lang.version>
 		<junit.version>4.11</junit.version>
 	

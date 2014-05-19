@@ -2,7 +2,7 @@ package br.feevale.bytechat.util;
 
 import java.util.concurrent.TimeUnit;
 
-public class ThreadUtils {
+public final class ThreadUtils {
 
 	public static void sleep(long time, TimeUnit timeUnit) {
 		sleep(timeUnit.toMillis(time));

@@ -5,8 +5,8 @@ import br.feevale.bytechat.util.Session;
 
 public interface SessionListener {
 	
-	public void packetReceived(Session session, Packet packet);
+	public void packetReceived(Session source, Packet packet);
 	
-	public void sessionEnded(Session session);
+	public void sessionEnded(Session endedSession);
 
 }
