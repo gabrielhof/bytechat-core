@@ -6,6 +6,7 @@ public enum PacketType {
 	UNBIND(Unbind.class),
 	MESSAGE(Message.class), 
 	USER_LIST(UserList.class),
+	FILE(File.class),
 	
 	FAIL(Fail.class),
 	SUCCESS(Success.class)

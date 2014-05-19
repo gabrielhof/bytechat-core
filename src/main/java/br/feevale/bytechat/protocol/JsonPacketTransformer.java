@@ -31,7 +31,8 @@ public class JsonPacketTransformer implements PacketTransformer {
 	@Override
 	public Packet fromString(String s) {
 		try {
-			return jsonMapper.readValue(s, Packet.class);
+			Packet packet = jsonMapper.readValue(s, Packet.class);
+			return jsonMapper.readValue(s, packet.getType().getPacketClass());
 		} catch (Exception e) {
 			//TODO implementar algo
 			e.printStackTrace();
@@ -74,11 +75,30 @@ public class JsonPacketTransformer implements PacketTransformer {
 			
 			PacketType type = PacketType.valueOf(typeNode.asText());
 			try {
-				Packet packet = type.getPacketClass().newInstance();
+				FakePacket packet = new FakePacket();
+				packet.setType(type);
+				
 				return packet;
 			} catch (Exception e) {
 				throw new JsonParseException("Pacote declarado incorretamente.", jp.getCurrentLocation());
 			}
+		}
+		
+	}
+	
+	class FakePacket implements Packet {
+
+		private static final long serialVersionUID = -4390875428206475490L;
+		
+		private PacketType type;
+		
+		public void setType(PacketType type) {
+			this.type = type;
+		}
+		
+		@Override
+		public PacketType getType() {
+			return type;
 		}
 		
 	}

@@ -1,6 +1,7 @@
 package br.feevale.bytechat.listener;
 
 import br.feevale.bytechat.packet.Bind;
+import br.feevale.bytechat.packet.File;
 import br.feevale.bytechat.packet.Message;
 import br.feevale.bytechat.packet.Unbind;
 import br.feevale.bytechat.packet.UserList;
@@ -16,6 +17,7 @@ public abstract class AbstractSessionListener extends ReflectionSessionListener 
 	
 	public void userListReceived(Session source, UserList userList) {}
 	
+	public void fileReceived(Session source, File file) {}
 	
 	@Override
 	public void sessionEnded(Session endedSession) {}
