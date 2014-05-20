@@ -1,5 +1,6 @@
 package br.feevale.bytechat.util;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -11,11 +12,12 @@ import br.feevale.bytechat.packet.File;
 
 public final class PacketUtils {
 	
-	private static final int FILE_SPLIT_SIZE = (1024 * 1024 * 2); //2MB
+	private static final int FILE_SPLIT_SIZE = (1024 * 1024 * 5); //2MB
 	
 	public static void sendSerializedFile(Session session, java.io.File file) {
 		try {
-			int totalParts = new BigDecimal(file.length()).divide(new BigDecimal(FILE_SPLIT_SIZE), RoundingMode.CEILING).intValue();
+			long fileLength = file.length();
+			int totalParts = new BigDecimal(fileLength).divide(new BigDecimal(FILE_SPLIT_SIZE), RoundingMode.CEILING).intValue();
 			
 			File f = new File();
 			f.setFileId(generateId(file.getAbsolutePath()));
@@ -23,13 +25,23 @@ public final class PacketUtils {
 			f.setContentType(Files.probeContentType(Paths.get(file.getAbsolutePath())));
 			f.setTotalParts(totalParts);
 			
-			InputStream input = new FileInputStream(file);
-			byte[] buffer = new byte[FILE_SPLIT_SIZE];
-			for (int i = 1; input.read(buffer) > -1; i++) {
+			InputStream input = new BufferedInputStream(new FileInputStream(file));
+			byte[] buffer = new byte[fileLength > FILE_SPLIT_SIZE ? FILE_SPLIT_SIZE : (int) fileLength];
+			long alreadyRead = 0;
+			for (int i = 1, readed; (readed = input.read(buffer)) > -1; i++) {
+				alreadyRead += readed;
+				
 				f.setPart(i);
 				f.setContents(buffer);
-				
+					
 				session.send(f);
+				
+				long missing = fileLength - alreadyRead;
+				
+				if (missing < FILE_SPLIT_SIZE) {
+					buffer = new byte[missing == 0 ? 1 : (int) missing];
+				}
+				
 			}
 			
 			input.close();
