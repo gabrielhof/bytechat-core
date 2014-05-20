@@ -36,6 +36,10 @@ public class Message implements Packet {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+	public boolean isPrivate() {
+		return recipients != null && recipients.size() > 0;
+	}
 
 	@Override
 	public PacketType getType() {
