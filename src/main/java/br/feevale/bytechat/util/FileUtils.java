@@ -1,6 +1,9 @@
 package br.feevale.bytechat.util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.InputStreamReader;
 
 public final class FileUtils {
 
@@ -37,6 +40,32 @@ public final class FileUtils {
 		}
 		
 		return destination;
+	}
+
+	public static String getContents(String file, boolean classpath) {
+		try {
+			BufferedReader reader = null;
+			
+			if (classpath) {
+				reader = new BufferedReader(new InputStreamReader(FileUtils.class.getClassLoader().getResourceAsStream(file)));
+			} else {
+				reader = new BufferedReader(new FileReader(new File(file)));
+			}
+			
+			StringBuilder builder = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				builder.append(line).append("\n");
+			}
+			
+			if (!classpath) {
+				reader.close();
+			}
+			
+			return builder.toString();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

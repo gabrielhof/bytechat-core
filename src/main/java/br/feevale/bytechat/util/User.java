@@ -39,5 +39,10 @@ public class User {
 	public int hashCode() {
 		return getName() == null ? super.hashCode() : getName().hashCode();
 	}
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 }
